@@ -2,46 +2,74 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => res.send('Hello World!'));
 
+// example code
+
+app.get('/', (req, res) => res.send('Hello World!'));
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
-function ListItem(title, absPath, itemType) {
-    this.title = title;
-    this.absPath = absPath;
-    this.itemType = itemType;
+
+
+
+
+// My code :)
+
+function createId() {
+    let idList = [];
+    let newId;
+
+    do {
+        newId = Math.round(Math.random() * 10000);
+    }
+    while (idList.includes(newId));
+
+    return newId;
 }
 
-function listDirectory(directoryPath) {
-    const fs = require('fs');
+function addId(obj) {
+    obj['id'] = createId();
 
-    listOfStuff = [];
-
-    var path = require('path');
-    //Return the directories:
-    var parentPath = path.dirname(directoryPath);
-
-    listOfStuff.push(new ListItem('BACK', parentPath, 'back'));
-
-    fs.readdirSync(directoryPath).forEach(file => {
-        var itemType = 'file';
-        var itemPath = path.resolve(directoryPath + '/' + file);
-        //skip hidden files
-        if (file.charAt(0) != ".") {
-            //check if directory
-            if (fs.lstatSync(itemPath).isDirectory()) {
-                itemType = 'folder';
-            }
-            listOfStuff.push(new ListItem(file, itemPath, itemType));
-        }
-    });
-
-    return listOfStuff;
+    if (obj.children) {
+        obj.children.forEach((element) => {
+            addId(element);
+        });
+    }
 }
 
+function getTree() {
+    const dirTree = require("directory-tree");
+    const tree = dirTree("./downloads");
+
+    addId(tree);
+
+    return tree;
+}
+
+
+
+
+
+function findItem(obj, id) {
+    if (obj.id == id) {
+        return obj;
+    } else if (obj.children) {
+        obj.children.forEach((element) => {
+            findItem(element, id)
+        })
+    }
+
+}
+
+const tree = getTree();
+
+app.get('/find/:id', function (req, res) {
+    console.log(req.params.id);
+    const igen = findItem(tree, req.params.id);
+    res.send(igen);
+});
 
 app.get('/list-movies', function (req, res) {
-    const lol = listDirectory('./downloads')
-    res.send(lol
-    );
+    res.send(tree);
 });
+
+
