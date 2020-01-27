@@ -15,7 +15,7 @@ let directory = new Directory();
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
 app.get('/find/:id', function (req, res) {
-    res.send(directory.findNode(req.params.id, directory.getTree()));
+    res.send(directory.searchTree(req.params.id));
 });
 
 app.get('/list-movies', function (req, res) {
@@ -26,7 +26,7 @@ app.get('/list-movies', function (req, res) {
 // CONTROLS
 
 app.get('/play/:id', function (req, res) {
-    let obj = directory.findNode(req.params.id, directory.getTree());
+    let obj = directory.searchTree(req.params.id);
     res.send(player.openVideo(obj.path));
 });
 

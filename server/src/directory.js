@@ -42,6 +42,10 @@ class Directory {
         return tree;
     }
 
+    searchTree(id) {
+        return this.findNode(id, this.tree);
+    }
+
     findNode(id, currentNode) {
         let i,
             currentChild,
