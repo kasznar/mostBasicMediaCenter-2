@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 3001;
 
 const Player = require('./player');
 const Directory = require('./directory');
@@ -14,48 +14,48 @@ let directory = new Directory();
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
-app.get('/find/:id', function (req, res) {
+app.get('/api/find/:id', function (req, res) {
     res.send(directory.searchTree(req.params.id));
 });
 
-app.get('/list-movies', function (req, res) {
+app.get('/api/list-movies', function (req, res) {
     res.send(directory.getTree());
 });
 
 
 // CONTROLS
 
-app.get('/play/:id', function (req, res) {
+app.get('/api/play/:id', function (req, res) {
     let obj = directory.searchTree(req.params.id);
     res.send(player.openVideo(obj.path));
 });
 
-app.get('/pause', function (req, res) {
+app.get('/api/pause', function (req, res) {
     player.pausePlayer();
     res.send("paused");
 });
 
-app.get('/quit', function (req, res) {
+app.get('/api/quit', function (req, res) {
     player.quitPlayer();
     res.send("quited");
 });
 
-app.get('/volume-up', function (req, res) {
+app.get('/api/volume-up', function (req, res) {
     player.volumeUp();
     res.send("volume up");
 });
 
-app.get('/volume-down', function (req, res) {
+app.get('/api/volume-down', function (req, res) {
     player.volumeDown();
     res.send("volume down");
 });
 
-app.get('/seek-forward', function (req, res) {
+app.get('/api/seek-forward', function (req, res) {
     player.seekForward();
     res.send("seek forward");
 });
 
-app.get('/seek-backward', function (req, res) {
+app.get('/api/seek-backward', function (req, res) {
     player.seekBackward();
     res.send("seek backward");
 });
