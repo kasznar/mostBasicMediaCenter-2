@@ -1,6 +1,7 @@
+const crypto = require('crypto');
+
 class Directory {
     tree;
-    idList = [];
 
     getTree() {
         return this.tree;
@@ -10,25 +11,29 @@ class Directory {
         this.tree = this.makeTree();
     }
 
-    createId() {
-        let newId;
-
-        do {
-            newId = Math.round(Math.random() * 10000);
-        }
-        while (this.idList.includes(newId));
-
-        this.idList.push(newId);
-
-        return newId;
+    createId(path) {
+        // "absolute" path will always result in the same hash
+        return crypto.createHash('md5').update(path).digest('hex');
     }
 
     addId(obj) {
-        obj['id'] = this.createId();
+        obj['id'] = this.createId(obj.path);
 
         if (obj.children) {
             obj.children.forEach((element) => {
                 this.addId(element);
+            });
+        }
+    }
+
+    addParent(obj, parentId = null) {
+        if (parentId) {
+            obj['parentId'] = parentId;
+        }
+
+        if (obj.children) {
+            obj.children.forEach((element) => {
+                this.addParent(element, obj.id);
             });
         }
     }
@@ -38,6 +43,7 @@ class Directory {
         const tree = dirTree("./downloads");
 
         this.addId(tree);
+        this.addParent(tree);
 
         return tree;
     }

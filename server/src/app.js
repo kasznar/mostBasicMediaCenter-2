@@ -7,6 +7,7 @@ const Directory = require('./directory');
 
 
 let player = new Player(true);
+// for now this only scans once
 let directory = new Directory();
 
 
@@ -14,20 +15,29 @@ let directory = new Directory();
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
-app.get('/api/find/:id', function (req, res) {
-    res.send(directory.searchTree(req.params.id));
+app.get('/api/list/:id?', function (req, res) {
+    if (req.params.id) {
+        let obj = directory.searchTree(req.params.id);
+        if (obj.children) {
+            res.send(obj);
+        } else {
+            res.send('not a folder');
+        }
+    } else {
+        res.send(directory.getTree());
+    }
 });
-
-app.get('/api/list-movies', function (req, res) {
-    res.send(directory.getTree());
-});
-
 
 // CONTROLS
 
 app.get('/api/play/:id', function (req, res) {
     let obj = directory.searchTree(req.params.id);
-    res.send(player.openVideo(obj.path));
+    if (obj.children) {
+        res.send('not a video');
+    } else {
+        player.openVideo(obj.path)
+        res.send('started');
+    }
 });
 
 app.get('/api/pause', function (req, res) {
