@@ -40,6 +40,7 @@ class Directory {
 
     makeTree() {
         const dirTree = require("directory-tree");
+        // for testing: ../../../raspberry-docker/downloads/
         const tree = dirTree("./downloads");
 
         this.addId(tree);

@@ -1,7 +1,10 @@
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
+import usePlayer from "../Player/usePlayer";
 
-const usePlayer = () => {
+const useDirectory = () => {
+    const { showPlayer } = usePlayer();
+
     const [dir, setDir] = useState({
         children: []
     });
@@ -30,11 +33,12 @@ const usePlayer = () => {
 
     const onPlayClick = useCallback((item) => (/*event*/) => {
         callPlay(item.id);
-    }, []);
+        showPlayer();
+    }, [callPlay, showPlayer]);
 
     return {dir, onBackClick, onOpenClick, onPlayClick};
 };
 
-export default usePlayer;
+export default useDirectory;
 
 

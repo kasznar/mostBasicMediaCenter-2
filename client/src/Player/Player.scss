@@ -1,0 +1,16 @@
+.player {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #17181b;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  button {
+    background-color: #194956;
+    color: white;
+    font-size: 15px;
+    padding: 10px;
+  }
+}
