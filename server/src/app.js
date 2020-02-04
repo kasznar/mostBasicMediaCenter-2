@@ -2,13 +2,15 @@ const express = require('express');
 const app = express();
 const port = 3001;
 
+const argv = require('yargs').argv;
+
 const Player = require('./player');
 const Directory = require('./directory');
 
 
 let player = new Player(true);
 // for now this only scans once
-let directory = new Directory();
+let directory = new Directory(argv.path);
 
 
 // SERVER

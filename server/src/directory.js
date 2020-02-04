@@ -2,12 +2,14 @@ const crypto = require('crypto');
 
 class Directory {
     tree;
+    path;
 
     getTree() {
         return this.tree;
     }
 
-    constructor() {
+    constructor(pPath = null) {
+        this.path = pPath ? pPath : './downloads';
         this.tree = this.makeTree();
     }
 
@@ -41,7 +43,7 @@ class Directory {
     makeTree() {
         const dirTree = require("directory-tree");
         // for testing: ../../../raspberry-docker/downloads/
-        const tree = dirTree("./downloads");
+        const tree = dirTree(this.path);
 
         this.addId(tree);
         this.addParent(tree);

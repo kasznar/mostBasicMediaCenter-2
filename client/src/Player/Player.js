@@ -34,16 +34,14 @@ const Player = () => {
     }, []);
 
 
-
     return (
         <div className="player">
-            <button onClick={callPause}>⏯Play/Pause️</button>
-            <button onClick={callStop}>⏹Stop️</button>
-            <button onClick={callVolumeDown}>🔈-</button>
-            <button onClick={callVolumeUp}>🔊+</button>
-            <button onClick={callSeekBackward}>⏪</button>
-            <button onClick={callSeekForward}>⏩</button>
-
+            <button onClick={callPause}><span role="img" aria-label="noice">⏯</span>Play/Pause️</button>
+            <button onClick={callStop}><span role="img" aria-label="noice">⏹</span>Stop️</button>
+            <button onClick={callVolumeDown}><span role="img" aria-label="noice">🔈</span>-</button>
+            <button onClick={callVolumeUp}><span role="img" aria-label="noice">🔊</span>+</button>
+            <button onClick={callSeekBackward}><span role="img" aria-label="noice">⏪</span></button>
+            <button onClick={callSeekForward}><span role="img" aria-label="noice">⏩</span></button>
         </div>
     );
 };
